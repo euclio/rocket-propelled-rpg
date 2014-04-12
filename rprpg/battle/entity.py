@@ -19,7 +19,7 @@ class AnimationType(object):
 class Entity(object):
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, spritesheet, position=None):
+    def __init__(self, displaysurf, spritesheet, position=None):
         self.spritesheet = spritesheet
         self.animations = {}
         self.position = position
