@@ -3,6 +3,8 @@ import pygame
 from . import action
 from ..window import Window
 
+import sys
+
 class EntityType(object):
     NUM_DEFAULT_TYPES = 3
     All, Player, Enemy = range(NUM_DEFAULT_TYPES)
@@ -22,6 +24,7 @@ class Entity(object):
 
     def __init__(self, displaysurf, spritesheet, position=None):
         self.spritesheet = spritesheet
+        self.strip = self.spritesheet.load_strip(pygame.Rect(0, 0, 0, 0), 3)
         self.animations = {}
         self.position = position
 
@@ -30,6 +33,10 @@ class Entity(object):
         self.defense = 5
         self.speed = 5
         self.hp = 20
+
+    @property
+    def bounding_box(self):
+        return self.strip[0].get_rect()
 
 
     def set_location(self, x, y):
@@ -63,13 +70,13 @@ class Entity(object):
 
 class Player(Entity):
     def __init__(self, displaysurf, spritesheet, position=None):
-	super(Player, self).__init__(self.displaysurf, spritesheet, position)
+        super(Player, self).__init__(displaysurf, spritesheet, position)
         actionList = []
         actionList.append(action.Attack(self, EntityType.Enemy))
 
         self.displaysurf = displaysurf
 
-	currentSelection = 0
+        currentSelection = 0
         self.currentSelection = currentSelection
         menuOptions=["Attack"]
         menu = Window(menuOptions, 1024, (572+20), 0, 572,self.displaysurf,actionList)
@@ -88,26 +95,26 @@ class Player(Entity):
         while True:
             for event in pygame.event.get():
                 print(event)
-                if event.type==QUIT:
+                if event.type == pygame.locals.QUIT:
                     pygame.quit()
                     sys.exit()
-                if (event.type==KEYDOWN):
+                if (event.type == pygame.locals.KEYDOWN):
                     if event.key == pygame.K_UP and self.currentSelection > 0:
                         pastSelection = self.currentSelection
                         self.currentSelection =self.currentSelection-1
                         self.currentMenu.highlight(self.currentSelection,self.displaysurf)
                         self.currentMenu.unhighlight(pastSelection,self.displaysurf)
-                    if event.key == pygame.K_DOWN and self.currentSelection < currentMenu.getSize()-1:
+                    if event.key == pygame.K_DOWN and self.currentSelection < self.currentMenu.getSize()-1:
                         pastSelection = self.currentSelection
                         self.currentSelection = self.currentSelection+1
                         self.currentMenu.highlight(self.currentSelection,self.displaysurf)
                         self.currentMenu.unhighlight(pastSelection,self.displaysurf)
                     if event.key == pygame.K_RETURN:
-                        action = self.currentMenu.select(currentSelection)
+                        action = self.currentMenu.select(self.currentSelection)
                         return action
                         break
             break
-                    
+
     def select_target(self, entities, allowed_types):
         return [next(entity for entity in entities if entity.type in allowed_types)]
 
