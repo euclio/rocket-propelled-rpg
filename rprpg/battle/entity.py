@@ -112,8 +112,6 @@ class Player(Entity):
                     if event.key == pygame.K_RETURN:
                         action = self.currentMenu.select(self.currentSelection)
                         return action
-                        break
-            break
 
     def select_target(self, entities, allowed_types):
         return [next(entity for entity in entities if entity.type in allowed_types)]
