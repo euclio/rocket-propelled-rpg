@@ -14,11 +14,6 @@ def main():
     entities = [Player(DISPLAYSURF, spritesheet), Enemy(DISPLAYSURF, spritesheet)]
     battle = Scene(DISPLAYSURF, entities)
     battle.start()
-    #currentSelection = 0
-    #mainMenuOptions=["Attack","Defend","Items","Run"]
-    #mainMenu = Window(mainMenuOptions, 1024, (572+20), 0, 572,DISPLAYSURF)
-    #currentMenu = mainMenu
-    #currentMenu.highlight(currentSelection,DISPLAYSURF)
 
     while True:
         for event in pygame.event.get():
