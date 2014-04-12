@@ -9,7 +9,7 @@ def main():
 
     currentSelection = 0
     mainMenuOptions=["Attack","Defend","Items","Run"]
-    mainMenu = Window(mainMenuOptions, 768, (572+20), 0, 572,DISPLAYSURF)
+    mainMenu = Window(mainMenuOptions, 1024, (572+20), 0, 572,DISPLAYSURF)
     currentMenu = mainMenu
     currentMenu.highlight(currentSelection,DISPLAYSURF)
 
@@ -19,14 +19,14 @@ def main():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
-            print(currentMenu.getSize())
             if (event.type==KEYDOWN):
                 if event.key == pygame.K_UP and currentSelection > 0:
                     pastSelection = currentSelection
                     currentSelection = currentSelection-1
                     currentMenu.highlight(currentSelection,DISPLAYSURF)
                     currentMenu.unhighlight(pastSelection,DISPLAYSURF)
-                if event.key == pygame.K_DOWN and currentSelection < currentMenu.getSize():
+                if event.key == pygame.K_DOWN and currentSelection < currentMenu.getSize()-1:
+                    print(currentSelection)
                     pastSelection = currentSelection
                     currentSelection = currentSelection+1
                     currentMenu.highlight(currentSelection,DISPLAYSURF)
