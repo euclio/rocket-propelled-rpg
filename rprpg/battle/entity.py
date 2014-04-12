@@ -1,6 +1,7 @@
 import abc
 import pygame
 from . import action
+from ..window import Window
 
 class EntityType(object):
     NUM_DEFAULT_TYPES = 3
@@ -61,6 +62,9 @@ class Entity(object):
 
 
 class Player(Entity):
+    def __init__(self, displaysurf, spritesheet, position=None):
+        super(Player, self).__init__(displaysurf, spritesheet, position)
+
     @property
     def type(self):
         return EntityType.Player
