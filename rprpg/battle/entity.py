@@ -67,7 +67,9 @@ class Entity(object):
 
 
     def animate(self):
-        self.displaysurf.fill((0, 0, 0), rect=self.strip[1].get_rect())
+        rect = self.strip[1].get_rect().copy()
+        rect.move_ip(self.position)
+        self.displaysurf.fill((0, 0, 0), rect=rect)
         self.displaysurf.blit(self.strip[1], self.position)
 
 
