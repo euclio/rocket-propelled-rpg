@@ -5,13 +5,12 @@ def default_ordering(entity):
 
 
 class Scene(object):
-    def __init__(self, canvas, entities, order_key=default_ordering):
+    def __init__(self, entities, order_key=default_ordering):
         if not order_key:
             self.order_key = default_ordering
 
         self.entities = entities
         self.order_key = order_key
-        self.canvas = canvas
 
 
     def start(self):
