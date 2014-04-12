@@ -98,7 +98,6 @@ class Player(Entity):
 
         while True:
             for event in pygame.event.get():
-                print(event)
                 if event.type == pygame.locals.QUIT:
                     pygame.quit()
                     sys.exit()
