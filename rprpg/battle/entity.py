@@ -113,6 +113,9 @@ class Player(Entity):
                         action = self.currentMenu.select(self.currentSelection)
                         return action
 
+                pygame.display.update()
+
+
     def select_target(self, entities, allowed_types):
         return [next(entity for entity in entities if entity.type in allowed_types)]
 
