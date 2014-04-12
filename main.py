@@ -19,11 +19,9 @@ def main():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
-            
-            if (event.type==KEYDOWN) or (event.type == KEYUP):
-                print("IN KEYDOWN")
+            print(currentMenu.getSize())
+            if (event.type==KEYDOWN):
                 if event.key == pygame.K_UP and currentSelection > 0:
-                    print("IN KEYUP")
                     pastSelection = currentSelection
                     currentSelection = currentSelection-1
                     currentMenu.highlight(currentSelection,DISPLAYSURF)
