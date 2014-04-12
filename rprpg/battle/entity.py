@@ -22,13 +22,14 @@ class AnimationType(object):
 class Entity(object):
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, displaysurf, spritesheet, position=None):
+    def __init__(self, displaysurf, spritesheet, position=(0, 0)):
+        self.displaysurf = displaysurf
         self.spritesheet = spritesheet
         self.strip = self.spritesheet.load_strip(pygame.Rect(0, 0, 400, 400), 3, colorkey=(255, 255, 255))
         self.animations = {}
         self.position = position
 
-        displaysurf.blit(self.strip[0], (0, 0))
+        displaysurf.blit(self.strip[0], position)
 
         # Default stats
         self.attack = 10
@@ -65,21 +66,25 @@ class Entity(object):
         pass
 
 
+    def animate(self):
+        self.displaysurf.fill((0, 0, 0), rect=self.strip[1].get_rect())
+        self.displaysurf.blit(self.strip[1], self.position)
+
+
+
 class Player(Entity):
     def __init__(self, displaysurf, spritesheet, position=None):
         super(Player, self).__init__(displaysurf, spritesheet, position)
         actionList = []
         actionList.append(action.Attack(self, EntityType.Enemy))
 
-        self.displaysurf = displaysurf
-
         currentSelection = 0
         self.currentSelection = currentSelection
-        menuOptions=["Attack"]
-        menu = Window(menuOptions, 1024, (572+20), 0, 572,self.displaysurf,actionList)
+        menuOptions = ["Attack"]
+        menu = Window(menuOptions, 1024, (572+20), 0, 572, self.displaysurf, actionList)
         currentMenu = menu
         self.currentMenu = currentMenu
-        self.currentMenu.highlight(currentSelection,self.displaysurf)
+        self.currentMenu.highlight(currentSelection, self.displaysurf)
 
     @property
     def type(self):

@@ -14,11 +14,12 @@ class Scene(object):
 
 
     def start(self):
-        for entity in sorted(self.entities, key=self.order_key):
-            action = entity.next_action(self.entities)
+        for the_entity in sorted(self.entities, key=self.order_key):
+            action = the_entity.next_action(self.entities)
             if action.num_targets > 0:
                 allowed_types = action.allowed_types
-                targets = entity.select_target(self.entities, allowed_types)
-                action.execute(entity, targets)
+                targets = the_entity.select_target(self.entities, allowed_types)
+                action.execute(the_entity, targets)
+                the_entity.animate()
             else:
-                action.execute(entity)
+                action.execute(the_entity)
