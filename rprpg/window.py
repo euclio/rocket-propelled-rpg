@@ -30,13 +30,16 @@ class Window(object):
         self.fontObj = fontObj
         menuOptions=[]
         self.menuOptions = menuOptions
+        count = 0
         for string in strings:
             text = fontObj.render(string, True, WHITE)
             textRect=text.get_rect()
             textRect.center = (textOffsetX, textOffsetY)
             self.menuSurf.blit(text, textRect)
             textOffsetY += 40
-            self.menuOptions.append([string, text, textRect, self.action])
+            self.menuOptions.append([string, text, textRect, self.action[count]])
+            count = count+1
+            
 
         DISPLAYSURF.blit(menuSurf, (posX, posY))
 
@@ -58,7 +61,7 @@ class Window(object):
     def select(self, selection):
         currentOption = self.menuOptions[selection]
         currentAction = currentOption[3]
-        currentAction.execute()
+        return currentAction
 
     def getSize(self):
         return len(self.menuOptions)
