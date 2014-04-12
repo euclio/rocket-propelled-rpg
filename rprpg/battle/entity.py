@@ -63,7 +63,19 @@ class Entity(object):
 
 class Player(Entity):
     def __init__(self, displaysurf, spritesheet, position=None):
-        super(Player, self).__init__(displaysurf, spritesheet, position)
+	super(Player, self).__init__(self.displaysurf, spritesheet, position)
+        actionList = []
+        actionList.append(action.Attack(self, EntityType.Enemy))
+
+        self.displaysurf = displaysurf
+
+	currentSelection = 0
+        self.currentSelection = currentSelection
+        menuOptions=["Attack"]
+        menu = Window(menuOptions, 1024, (572+20), 0, 572,self.displaysurf,actionList)
+        currentMenu = menu
+        self.currentMenu = currentMenu
+        self.currentMenu.highlight(currentSelection,self.displaysurf)
 
     @property
     def type(self):
@@ -72,9 +84,30 @@ class Player(Entity):
 
     def next_action(self, entities):
         enemies = EntityType.get_type(EntityType.Enemy, entities)
-        return action.Attack(self, EntityType.Enemy)
 
-
+        while True:
+            for event in pygame.event.get():
+                print(event)
+                if event.type==QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if (event.type==KEYDOWN):
+                    if event.key == pygame.K_UP and self.currentSelection > 0:
+                        pastSelection = self.currentSelection
+                        self.currentSelection =self.currentSelection-1
+                        self.currentMenu.highlight(self.currentSelection,self.displaysurf)
+                        self.currentMenu.unhighlight(pastSelection,self.displaysurf)
+                    if event.key == pygame.K_DOWN and self.currentSelection < currentMenu.getSize()-1:
+                        pastSelection = self.currentSelection
+                        self.currentSelection = self.currentSelection+1
+                        self.currentMenu.highlight(self.currentSelection,self.displaysurf)
+                        self.currentMenu.unhighlight(pastSelection,self.displaysurf)
+                    if event.key == pygame.K_RETURN:
+                        action = self.currentMenu.select(currentSelection)
+                        return action
+                        break
+            break
+                    
     def select_target(self, entities, allowed_types):
         return [next(entity for entity in entities if entity.type in allowed_types)]
 
