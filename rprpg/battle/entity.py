@@ -24,9 +24,11 @@ class Entity(object):
 
     def __init__(self, displaysurf, spritesheet, position=None):
         self.spritesheet = spritesheet
-        self.strip = self.spritesheet.load_strip(pygame.Rect(0, 0, 0, 0), 3)
+        self.strip = self.spritesheet.load_strip(pygame.Rect(0, 0, 400, 400), 3, colorkey=(255, 255, 255))
         self.animations = {}
         self.position = position
+
+        displaysurf.blit(self.strip[0], (0, 0))
 
         # Default stats
         self.attack = 10
@@ -46,11 +48,6 @@ class Entity(object):
     def register_animation(self, animation_type, sprite_tiles):
         self.animations[animation_type] = sprite_tiles
 
-
-    def animate(self, animation_type):
-        frames = self.spritesheet.get_frames(self.animations[animation_type])
-        for frame in frame:
-            print('hi')
 
     @property
     @abc.abstractmethod
@@ -112,6 +109,9 @@ class Player(Entity):
                     if event.key == pygame.K_RETURN:
                         action = self.currentMenu.select(self.currentSelection)
                         return action
+
+                pygame.display.update()
+
 
     def select_target(self, entities, allowed_types):
         return [next(entity for entity in entities if entity.type in allowed_types)]
